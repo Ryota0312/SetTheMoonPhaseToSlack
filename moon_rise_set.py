@@ -3,12 +3,15 @@ import requests
 import json
 import yaml
 import xmltodict
+import os
 
 SLACK_STATUS_API = 'https://slack.com/api/users.profile.set'
 MOON_API = 'http://labs.bitmeister.jp/ohakon/api/'
 
-SLACK_TOKEN = yaml.load(open('settings.yml','r'))['slack_token']
-
+try:
+    SLACK_TOKEN = yaml.load(open('settings.yml','r'))['slack_token']
+except:
+    SLACK_TOKEN = os.environ["SLACK_TOKEN"]
 
 def get_moon_status(lat, lng, y, m, d):
     result = requests.get(url=MOON_API, params={'mode': 'moon_rise_set', 'year': y, 'month': m, 'day': d, 'lat': lat, 'lng': lng})

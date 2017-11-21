@@ -40,8 +40,8 @@ def moonage2emoji(ma):
 
 def main():
     date = datetime.date.today()
-    moon_info = get_moon_status(34.54, 133.92, date.year, date.month, date.day)
-    status_text = "月齢: " + moon_info["result"]["moon_age"] + " 月出: " + moon_info["result"]["rise_and_set"]["moonrise_hm"] + " 月没: "  + moon_info["result"]["rise_and_set"]["moonset_hm"] + " (岡山市," + str(date.year) + "/" + str(date.month) + "/" + str(date.day) + ")"
+    moon_info = get_moon_status(yaml.load(open('settings.yml','r'))['lat'], yaml.load(open('settings.yml','r'))['lng'], date.year, date.month, date.day)
+    status_text = "月齢: " + moon_info["result"]["moon_age"] + " 月出: " + moon_info["result"]["rise_and_set"]["moonrise_hm"] + " 月没: "  + moon_info["result"]["rise_and_set"]["moonset_hm"] + " (" + yaml.load(open('settings.yml','r'))['city'] + "," + str(date.year) + "/" + str(date.month) + "/" + str(date.day) + ")"
     emoji = moonage2emoji(float(moon_info["result"]["moon_age"]))
     #print(emoji)
     #print(status_text)

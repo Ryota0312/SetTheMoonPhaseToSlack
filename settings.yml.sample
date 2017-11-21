@@ -1,1 +1,4 @@
-slack_token: YOUR_SLACK_TOKEN
+slack_token: <YOUR_SLACK_TOKEN>
+lat: 34.54
+lng: 133.92
+city: 岡山市

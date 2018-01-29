@@ -40,8 +40,23 @@ def moonage2emoji(ma):
 
 def main():
     date = datetime.date.today()
+    
     moon_info = get_moon_status(yaml.load(open('settings.yml','r'))['lat'], yaml.load(open('settings.yml','r'))['lng'], date.year, date.month, date.day)
-    status_text = "月齢: " + moon_info["result"]["moon_age"] + " 月出: " + moon_info["result"]["rise_and_set"]["moonrise_hm"] + " 月没: "  + moon_info["result"]["rise_and_set"]["moonset_hm"] + " (" + yaml.load(open('settings.yml','r'))['city'] + "," + str(date.year) + "/" + str(date.month) + "/" + str(date.day) + ")"
+    if moon_info["result"]["rise_and_set"]["moonrise_hm"]=="--:--":
+        datey = date - datetime.timedelta(days=1)
+        moon_info_yesterday = get_moon_status(yaml.load(open('settings.yml','r'))['lat'], yaml.load(open('settings.yml','r'))['lng'], datey.year, datey.month, datey.day)
+        moonrise = "前" + moon_info_yesterday["result"]["rise_and_set"]["moonrise_hm"]
+    else:
+        moonrise = moon_info["result"]["rise_and_set"]["moonrise_hm"]
+    if moon_info["result"]["rise_and_set"]["moonset_hm"]=="--:--":
+        datet = date + datetime.timedelta(days=1)
+        moon_info_tommorow = get_moon_status(yaml.load(open('settings.yml','r'))['lat'], yaml.load(open('settings.yml','r'))['lng'], datet.year, datet.month, datet.day)
+        moonset = "翌" + moon_info_tommorow["result"]["rise_and_set"]["moonset_hm"]
+    else:
+        moonset = moon_info["result"]["rise_and_set"]["moonset_hm"]
+        
+    status_text = "月齢: " + moon_info["result"]["moon_age"] + " 月出: " + moonrise + " 月没: "  + moonset + " (" + yaml.load(open('settings.yml','r'))['city'] + "," + str(date.year) + "/" + str(date.month) + "/" + str(date.day) + ")"
+    
     emoji = moonage2emoji(float(moon_info["result"]["moon_age"]))
     #print(emoji)
     #print(status_text)
